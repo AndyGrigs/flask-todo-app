@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Мої завдання{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h2>Мої завдання</h2>
+        
+        {% if tasks %}
+            <div class="list-group">
+                {% for task in tasks %}
+                    <div class="list-group-item {% if task.is_completed %}list-group-item-success{% endif %}">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1 {% if task.is_completed %}text-decoration-line-through{% endif %}">
+                                {{ task.title }}
+                            </h5>
+                            <small>{{ task.created_at.strftime('%d.%m.%Y %H:%M') }}</small>
+                        </div>
+                        
+                        {% if task.description %}
+                            <p class="mb-1 {% if task.is_completed %}text-decoration-line-through text-muted{% endif %}">
+                                {{ task.description }}
+                            </p>
+                        {% endif %}
+                        
+                        <div class="mt-2">
+                            {% if not task.is_completed %}
+                                <a href="#" class="btn btn-sm btn-success me-2">Виконано</a>
+                            {% else %}
+                                <a href="#" class="btn btn-sm btn-warning me-2">Скасувати</a>
+                            {% endif %}
+                            <a href="#" class="btn btn-sm btn-primary me-2">Редагувати</a>
+                            <a href="#" class="btn btn-sm btn-danger">Видалити</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <h4>У вас поки немає завдань</h4>
+                <p>Додайте перше завдання, використовуючи форму праворуч.</p>
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Додати нове завдання</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="#">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Назва завдання:</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Опис (необов'язково):</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Додати завдання</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

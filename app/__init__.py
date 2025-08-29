@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from app.routes import main, auth
+
 import os
 
 db = SQLAlchemy()
@@ -26,4 +28,14 @@ def create_app():
         from app.models import User
         return User.query.get(int(user_id))
     
+    app.register_blueprint(main)
+    app.register_blueprint(auth)
+    
+    # Створення таблиць
+    with app.app_context():
+        db.create_all()
+
     return app
+
+# Реєстрація Blueprint'ів
+    
