@@ -20,6 +20,10 @@ def create_app():
     login_manager.login_view = 'auth.login'
     login_manager.login_message = 'Будь ласка, увійдіть для доступу до цієї сторінки.'
     
-    # Реєстрація Blueprint'ів (додамо пізніше)
+    # Завантаження користувача для Flask-Login
+    @login_manager.user_loader
+    def load_user(user_id):
+        from app.models import User
+        return User.query.get(int(user_id))
     
     return app
